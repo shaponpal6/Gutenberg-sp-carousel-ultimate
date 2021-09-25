@@ -67,19 +67,14 @@ final class SP_Carousel_Ultimate_Main {
      * Register Block Editor Assets
      */
     public function register_block_editor_assets() {
+        // automatically load dependencies and version
+        $asset_file = include( plugin_dir_path( __FILE__ ) . 'build/index.asset.php');
         $js_file = SPCU_PLUGIN_URL . '/build/index.js';
         wp_enqueue_script(
             'spcu-gutenberg-carousel-block',
             $js_file,
-            [
-                'wp-blocks',
-                'wp-editor',
-                'wp-i18n',
-                'wp-element',
-                'wp-components',
-                'wp-data'
-            ],
-            filemtime($js_file),
+            $asset_file['dependencies'],
+            $asset_file['version'],
             true
         );
     }
