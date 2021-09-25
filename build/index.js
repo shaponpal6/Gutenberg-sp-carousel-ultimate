@@ -1,82 +1,70 @@
 /******/ (function() { // webpackBootstrap
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/blocks/author-carousel/index.js":
-/*!*********************************************!*\
-  !*** ./src/blocks/author-carousel/index.js ***!
-  \*********************************************/
-/***/ (function() {
-
-
-
-/***/ }),
-
-/***/ "./src/blocks/page-carousel/index.js":
+/***/ "./src/blocks/dynamic-block/index.js":
 /*!*******************************************!*\
-  !*** ./src/blocks/page-carousel/index.js ***!
-  \*******************************************/
-/***/ (function() {
-
-
-
-/***/ }),
-
-/***/ "./src/blocks/post-carousel/index.js":
-/*!*******************************************!*\
-  !*** ./src/blocks/post-carousel/index.js ***!
+  !*** ./src/blocks/dynamic-block/index.js ***!
   \*******************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__);
 
 
 
-(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType)('spcu-block/spcu-post-carousel', {
-  title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('SP Simple Block'),
-  icon: 'screenoptions',
-  category: 'common',
-  keywords: ['Block', 'Carousel', 'Gutenberg'],
+
+
+(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType)('spcu-block/spcu-dynamic-block-wp-data', {
+  apiVersion: 2,
+  title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('SP Latest Post'),
+  icon: 'megaphone',
+  category: 'widgets',
   attributes: {
-    text: {
+    title: {
       type: 'string',
-      default: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('This is simple block')
+      default: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Latest Post')
+    },
+    count: {
+      type: 'integer',
+      default: 4
     }
   },
   edit: props => {
-    console.log('props :>> ', props);
-    const {
-      attributes: {
-        text
-      }
-    } = props;
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, text);
-  },
-  save: props => {
-    const {
-      attributes: {
-        text
-      }
-    } = props;
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, text);
+    const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps)();
+    const posts = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => {
+      return select('core').getEntityRecords('postType', 'post');
+    }, []);
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", blockProps, !posts && 'Loading', posts && posts.length === 0 ? 'No Posts' : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, props.attributes.title), posts && posts.length > 0 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "spcu-dynamic-block-wp-data"
+    }, posts.slice(0, props.attributes.count).map(post => {
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+        key: post.id
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+        href: post.link
+      }, post.title.rendered));
+    })));
   }
 });
 
 /***/ }),
 
-/***/ "./src/blocks/product-carousel/index.js":
-/*!**********************************************!*\
-  !*** ./src/blocks/product-carousel/index.js ***!
-  \**********************************************/
-/***/ (function() {
+/***/ "@wordpress/block-editor":
+/*!*************************************!*\
+  !*** external ["wp","blockEditor"] ***!
+  \*************************************/
+/***/ (function(module) {
 
-
+module.exports = window["wp"]["blockEditor"];
 
 /***/ }),
 
@@ -86,8 +74,17 @@ __webpack_require__.r(__webpack_exports__);
   \********************************/
 /***/ (function(module) {
 
-"use strict";
 module.exports = window["wp"]["blocks"];
+
+/***/ }),
+
+/***/ "@wordpress/data":
+/*!******************************!*\
+  !*** external ["wp","data"] ***!
+  \******************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["data"];
 
 /***/ }),
 
@@ -97,7 +94,6 @@ module.exports = window["wp"]["blocks"];
   \*********************************/
 /***/ (function(module) {
 
-"use strict";
 module.exports = window["wp"]["element"];
 
 /***/ }),
@@ -108,7 +104,6 @@ module.exports = window["wp"]["element"];
   \******************************/
 /***/ (function(module) {
 
-"use strict";
 module.exports = window["wp"]["i18n"];
 
 /***/ })
@@ -182,23 +177,13 @@ module.exports = window["wp"]["i18n"];
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 !function() {
-"use strict";
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _blocks_author_carousel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./blocks/author-carousel */ "./src/blocks/author-carousel/index.js");
-/* harmony import */ var _blocks_author_carousel__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_blocks_author_carousel__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _blocks_page_carousel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./blocks/page-carousel */ "./src/blocks/page-carousel/index.js");
-/* harmony import */ var _blocks_page_carousel__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_blocks_page_carousel__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _blocks_post_carousel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./blocks/post-carousel */ "./src/blocks/post-carousel/index.js");
-/* harmony import */ var _blocks_product_carousel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./blocks/product-carousel */ "./src/blocks/product-carousel/index.js");
-/* harmony import */ var _blocks_product_carousel__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_blocks_product_carousel__WEBPACK_IMPORTED_MODULE_3__);
-
-
-
+/* harmony import */ var _blocks_dynamic_block__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./blocks/dynamic-block */ "./src/blocks/dynamic-block/index.js");
 
 }();
 /******/ })()
