@@ -1,0 +1,40 @@
+{
+  "name": "sp-carousel-ultimate",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "SHAPON PAL",
+  "scripts": {
+    "start": "wp-scripts start",
+    "build": "wp-scripts build",
+    "check-engines": "wp-scripts check-engines",
+    "check-licenses": "wp-scripts check-licenses",
+    "lint:css": "wp-scripts lint-style",
+    "lint:js": "wp-scripts lint-js",
+    "lint:pkg-json": "wp-scripts lint-pkg-json",
+    "test:e2e": "wp-scripts test-e2e",
+    "test:unit": "wp-scripts test-unit-js",
+    "readme": "grunt readme",
+    "i18n": "grunt i18n"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^18.0.1",
+    "grunt": "~0.4.5",
+    "grunt-wp-i18n": "~0.5.0",
+    "grunt-wp-readme-to-markdown": "~1.0.0"
+  },
+  "description": "=== Sp Carousel Ultimate === Contributors: (this should be a list of wordpress.org userid's) Donate link: https://example.com/ Tags: comments, spam Requires at least: 4.5 Tested up to: 5.8.1 Requires PHP: 5.6 Stable tag: 0.1.0 License: GPLv2 or later License URI: https://www.gnu.org/licenses/gpl-2.0.html",
+  "directories": {
+    "test": "tests"
+  },
+  "keywords": [
+    "WordPress",
+    "Gutenberg",
+    "React",
+    "Carousel"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "@wordpress/blocks": "^11.1.0",
+    "@wordpress/i18n": "^4.2.2"
+  }
+}
