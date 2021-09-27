@@ -1,33 +1,13 @@
 /******/ (function() { // webpackBootstrap
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/blocks/author-carousel/index.js":
-/*!*********************************************!*\
-  !*** ./src/blocks/author-carousel/index.js ***!
-  \*********************************************/
-/***/ (function() {
-
-
-
-/***/ }),
-
-/***/ "./src/blocks/page-carousel/index.js":
-/*!*******************************************!*\
-  !*** ./src/blocks/page-carousel/index.js ***!
-  \*******************************************/
-/***/ (function() {
-
-
-
-/***/ }),
-
-/***/ "./src/blocks/post-carousel/index.js":
-/*!*******************************************!*\
-  !*** ./src/blocks/post-carousel/index.js ***!
-  \*******************************************/
+/***/ "./src/blocks/editable-block/index.js":
+/*!********************************************!*\
+  !*** ./src/blocks/editable-block/index.js ***!
+  \********************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
@@ -38,45 +18,89 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType)('spcu-block/spcu-post-carousel', {
-  title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('SP Simple Block'),
+(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType)('spcu-gutenberg/block-editable', {
+  title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('SP Editable Block'),
   icon: 'screenoptions',
   category: 'common',
-  keywords: ['Block', 'Carousel', 'Gutenberg'],
+  keywords: ['Block', 'editable', 'Gutenberg'],
   attributes: {
     text: {
       type: 'string',
-      default: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('This is simple block')
+      default: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Add Social Link')
+    },
+    social_site: {
+      selector: 'a',
+      // tag a
+      source: 'children' // children of a, to bind the link text
+
+    },
+    site_url: {
+      selector: 'a',
+      // tag a
+      source: 'attribute',
+      // attribute of the tag
+      attribute: 'href' // attribute href, to bind the href of the link
+
     }
   },
   edit: props => {
     console.log('props :>> ', props);
     const {
+      className,
       attributes: {
-        text
+        text,
+        social_site,
+        site_url
       }
     } = props;
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, text);
+
+    function onChangeContentURL(content) {
+      props.setAttributes({
+        site_url: content
+      });
+    }
+
+    function onChangeContentName(content) {
+      props.setAttributes({
+        social_site: content
+      });
+    }
+
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      id: "block-editable-box"
+    }, " ", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, text), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "Name:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.RichText, {
+      className: className // Automatic class: gutenberg-blocks-sample-block-editable
+      ,
+      onChange: onChangeContentName // onChange event callback
+      ,
+      value: social_site // Binding
+      ,
+      placeholder: "Name of the Social Site"
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "URL:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.RichText, {
+      format: "string" // Default is 'element'. Wouldn't work for a tag attribute
+      ,
+      className: className // Automatic class: gutenberg-blocks-sample-block-editable
+      ,
+      onChange: onChangeContentURL // onChange event callback
+      ,
+      value: site_url // Binding
+      ,
+      placeholder: "URL of the site"
+    }));
   },
   save: props => {
     const {
       attributes: {
-        text
+        text,
+        social_site,
+        site_url
       }
     } = props;
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, text);
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, text), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+      href: site_url
+    }, social_site));
   }
 });
-
-/***/ }),
-
-/***/ "./src/blocks/product-carousel/index.js":
-/*!**********************************************!*\
-  !*** ./src/blocks/product-carousel/index.js ***!
-  \**********************************************/
-/***/ (function() {
-
-
 
 /***/ }),
 
@@ -86,7 +110,6 @@ __webpack_require__.r(__webpack_exports__);
   \********************************/
 /***/ (function(module) {
 
-"use strict";
 module.exports = window["wp"]["blocks"];
 
 /***/ }),
@@ -97,7 +120,6 @@ module.exports = window["wp"]["blocks"];
   \*********************************/
 /***/ (function(module) {
 
-"use strict";
 module.exports = window["wp"]["element"];
 
 /***/ }),
@@ -108,7 +130,6 @@ module.exports = window["wp"]["element"];
   \******************************/
 /***/ (function(module) {
 
-"use strict";
 module.exports = window["wp"]["i18n"];
 
 /***/ })
@@ -182,23 +203,13 @@ module.exports = window["wp"]["i18n"];
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 !function() {
-"use strict";
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _blocks_author_carousel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./blocks/author-carousel */ "./src/blocks/author-carousel/index.js");
-/* harmony import */ var _blocks_author_carousel__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_blocks_author_carousel__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _blocks_page_carousel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./blocks/page-carousel */ "./src/blocks/page-carousel/index.js");
-/* harmony import */ var _blocks_page_carousel__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_blocks_page_carousel__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _blocks_post_carousel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./blocks/post-carousel */ "./src/blocks/post-carousel/index.js");
-/* harmony import */ var _blocks_product_carousel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./blocks/product-carousel */ "./src/blocks/product-carousel/index.js");
-/* harmony import */ var _blocks_product_carousel__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_blocks_product_carousel__WEBPACK_IMPORTED_MODULE_3__);
-
-
-
+/* harmony import */ var _blocks_editable_block__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./blocks/editable-block */ "./src/blocks/editable-block/index.js");
 
 }();
 /******/ })()
