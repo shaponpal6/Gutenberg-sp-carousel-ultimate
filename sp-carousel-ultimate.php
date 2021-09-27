@@ -135,14 +135,41 @@ final class SP_Carousel_Ultimate_Main {
         }
         register_block_type( 'spcu-block/carousel', [
             'attributes' => array(),
-            'render_callback' => function(){
-                // server side rendering
-            },
+            'render_callback' => 'register_render_callback_fn',
             'editor_scripts'  => 'spcu-gutenberg-carousel-block',
             'editor_style'    => 'spcu-editor',
             'script'          => 'spcu-public',
             'style'           => 'spcu-public',
         ] );
+    }
+
+
+    /**
+     * server side rendering
+     */
+    public function register_render_callback_fn($block_attributes, $content){
+        return "Hellllll1    1111";
+        // $recent_posts = wp_get_recent_posts( array(
+        //     'numberposts' => 4,
+        //     'post_status' => 'publish',
+        // ) );
+        // if ( count( $recent_posts ) === 0 ) {
+        //     return 'No posts';
+        // }
+        // $post = $recent_posts[ 0 ];
+        // $post_id = $post['ID'];
+
+        // return sprintf(
+        //     '<a class="wp-block-my-plugin-latest-post" href="%1$s">%2$s</a>',
+        //     esc_url( get_permalink( $post_id ) ),
+        //     esc_html( get_the_title( $post_id ) )
+        // );
+        // ob_start();
+		// echo '<div class="sppr-advertisement-wrapper">';
+		// echo get_the_post_thumbnail( $random->ID);
+        // echo '<small>'.get_post_meta($random->ID,"short_text",true).'</small>';
+		// echo '</div>';
+		// return ob_get_clean();
     }
 
 }
