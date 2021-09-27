@@ -1,5 +1,4 @@
 import { registerBlockType } from '@wordpress/blocks'
-import { useSelect } from '@wordpress/data';
 import ServerSideRender from '@wordpress/server-side-render';
 import { useBlockProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n'
@@ -30,10 +29,8 @@ registerBlockType('spcu-block/carousel', {
                 />
             </div>
         );
-    },
-    save: function () {
-        return (
-            <h1>Hellllll0</h1>
-        )
     }
+    // save: function () {
+    //     return null;
+    // }
 });

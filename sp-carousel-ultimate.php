@@ -135,7 +135,7 @@ final class SP_Carousel_Ultimate_Main {
         }
         register_block_type( 'spcu-block/carousel', [
             'attributes' => array(),
-            'render_callback' => 'register_render_callback_fn',
+            'render_callback' => [$this, 'register_render_callback_fn'],
             'editor_scripts'  => 'spcu-gutenberg-carousel-block',
             'editor_style'    => 'spcu-editor',
             'script'          => 'spcu-public',
@@ -149,18 +149,18 @@ final class SP_Carousel_Ultimate_Main {
      */
     public function register_render_callback_fn($block_attributes, $content){
         $recent_posts = wp_get_recent_posts( array(
-            'numberposts' => 1,
+            'numberposts' => 4,
             'post_status' => 'publish',
         ) );
         if ( count( $recent_posts ) === 0 ) {
             return 'No posts';
         }
-        $post = $recent_posts[ 0 ];
-        $post_id = $post['ID'];
-
         ob_start();
 		echo '<div class="spcu-block-wrapper">';
-		echo '<a class="spcu-block-latest-post" href="'.esc_url( get_permalink( $post_id ) ).'">'.esc_html( get_the_title( $post_id ) ).'</a>';
+        foreach ( $recent_posts as $post){
+            $post_id = $post['ID'];
+            echo '<p><a class="spcu-block-latest-post" href="'.esc_url( get_permalink( $post_id ) ).'">'.esc_html( get_the_title( $post_id ) ).'</a></p>';
+        }
 		echo '</div>';
 		return ob_get_clean();
     }
