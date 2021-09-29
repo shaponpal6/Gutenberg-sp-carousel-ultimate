@@ -1,4 +1,5 @@
-import { registerBlockType, RichText, source } from '@wordpress/blocks'
+import { registerBlockType } from '@wordpress/blocks'
+const { RichText } = wp.editor;
 import { __ } from '@wordpress/i18n'
 
 registerBlockType('spcu-gutenberg/block-editable', {
@@ -12,13 +13,14 @@ registerBlockType('spcu-gutenberg/block-editable', {
             default: __('Add Social Link')
         },
         social_site: {
-            selector: 'a', // tag a
-            source: 'children',  // children of a, to bind the link text
+            type: "string",
+            selector: 'h2',
+            source: 'html',
         },
         site_url: {
-            selector: 'a',  // tag a
-            source: 'attribute', // attribute of the tag
-            attribute: 'href', // attribute href, to bind the href of the link
+            type: "string",
+            selector: 'p',
+            source: 'html',
         },
     },
     edit: (props) => {
@@ -34,22 +36,24 @@ registerBlockType('spcu-gutenberg/block-editable', {
         }
 
         return (
-            <div id="block-editable-box"> {/* You have to have a wrapper tag when your markup has more than 1 tag */}
+            <div id="block-editable-box">
                 <h1>{text}</h1>
                 <label>Name:</label>
                 <RichText
-                    className={className} // Automatic class: gutenberg-blocks-sample-block-editable
-                    onChange={onChangeContentName} // onChange event callback
-                    value={social_site} // Binding
-                    placeholder="Name of the Social Site"
+                    tagName='h2'
+                    className={className}
+                    onChange={onChangeContentName}
+                    allowedFormats={['core/bold', 'core/italic']}
+                    value={social_site}
+                    placeholder={__("Name of the Social Site")}
                 />
                 <label>URL:</label>
                 <RichText
-                    format="string"             // Default is 'element'. Wouldn't work for a tag attribute
-                    className={className} // Automatic class: gutenberg-blocks-sample-block-editable
-                    onChange={onChangeContentURL} // onChange event callback
-                    value={site_url} // Binding
-                    placeholder="URL of the site"
+                    tagName='p'
+                    className={className}
+                    onChange={onChangeContentURL}
+                    value={site_url}
+                    placeholder={__("Site Url")}
                 />
             </div>
         )
@@ -57,9 +61,18 @@ registerBlockType('spcu-gutenberg/block-editable', {
     save: (props) => {
         const { attributes: { text, social_site, site_url } } = props;
         return (
-            <div>
+            <div id="block-editable-box">
                 <h1>{text}</h1>
-                <a href={site_url}>{social_site}</a>
+                <label>Name:</label>
+                <RichText.Content
+                    tagName='h2'
+                    value={social_site}
+                />
+                <label>URL:</label>
+                <RichText.Content
+                    tagName='p'
+                    value={site_url}
+                />
             </div>
         );
     }

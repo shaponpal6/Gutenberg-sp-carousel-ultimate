@@ -73,7 +73,7 @@ final class SP_Carousel_Ultimate_Main {
         wp_enqueue_script(
             'spcu-gutenberg-carousel-block',
             $js_file,
-            $asset_file['dependencies'],
+            array('wp-blocks', 'wp-editor', 'wp-element', 'wp-i18n', 'wp-polyfill'),
             $asset_file['version'],
             true
         );
@@ -133,7 +133,7 @@ final class SP_Carousel_Ultimate_Main {
             // Block editor is not available.
             return;
         }
-        register_block_type( 'spcu-block/carousel', [
+        register_block_type( 'spcu-gutenberg/block-editable', [
             'attributes' => array(),
             'render_callback' => function(){
                 // server side rendering

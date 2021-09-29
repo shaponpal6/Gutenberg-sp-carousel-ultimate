@@ -17,6 +17,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
 
 
+const {
+  RichText
+} = wp.editor;
 
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType)('spcu-gutenberg/block-editable', {
   title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('SP Editable Block'),
@@ -29,18 +32,14 @@ __webpack_require__.r(__webpack_exports__);
       default: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Add Social Link')
     },
     social_site: {
-      selector: 'a',
-      // tag a
-      source: 'children' // children of a, to bind the link text
-
+      type: "string",
+      selector: 'h2',
+      source: 'html'
     },
     site_url: {
-      selector: 'a',
-      // tag a
-      source: 'attribute',
-      // attribute of the tag
-      attribute: 'href' // attribute href, to bind the href of the link
-
+      type: "string",
+      selector: 'p',
+      source: 'html'
     }
   },
   edit: props => {
@@ -68,24 +67,19 @@ __webpack_require__.r(__webpack_exports__);
 
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       id: "block-editable-box"
-    }, " ", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, text), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "Name:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.RichText, {
-      className: className // Automatic class: gutenberg-blocks-sample-block-editable
-      ,
-      onChange: onChangeContentName // onChange event callback
-      ,
-      value: social_site // Binding
-      ,
-      placeholder: "Name of the Social Site"
-    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "URL:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.RichText, {
-      format: "string" // Default is 'element'. Wouldn't work for a tag attribute
-      ,
-      className: className // Automatic class: gutenberg-blocks-sample-block-editable
-      ,
-      onChange: onChangeContentURL // onChange event callback
-      ,
-      value: site_url // Binding
-      ,
-      placeholder: "URL of the site"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, text), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "Name:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(RichText, {
+      tagName: "h2",
+      className: className,
+      onChange: onChangeContentName,
+      allowedFormats: ['core/bold', 'core/italic'],
+      value: social_site,
+      placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)("Name of the Social Site")
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "URL:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(RichText, {
+      tagName: "p",
+      className: className,
+      onChange: onChangeContentURL,
+      value: site_url,
+      placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)("Site Url")
     }));
   },
   save: props => {
@@ -96,9 +90,15 @@ __webpack_require__.r(__webpack_exports__);
         site_url
       }
     } = props;
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, text), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-      href: site_url
-    }, social_site));
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      id: "block-editable-box"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, text), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "Name:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(RichText.Content, {
+      tagName: "h2",
+      value: social_site
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "URL:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(RichText.Content, {
+      tagName: "p",
+      value: site_url
+    }));
   }
 });
 
