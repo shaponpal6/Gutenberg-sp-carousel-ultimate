@@ -21,7 +21,10 @@ const {
   RichText,
   InspectorControls,
   ColorPalette,
-  MediaUpload
+  MediaUpload,
+  InnerBlocks,
+  BlockControls,
+  AlignmentToolbar
 } = wp.editor;
 
 const {
@@ -29,6 +32,15 @@ const {
   RangeControl,
   PanelBody
 } = wp.components;
+const ALLOWED_BLOCKS = ['core/button'];
+const MY_TEMPLATE = [["core/image", {}], ["core/heading", {
+  placeholder: "Title"
+}], ["core/paragraph", {
+  placeholder: "description"
+}], // Custom block for Social Media!
+["core/button", {
+  placeholder: "Call to Action Button"
+}]];
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType)('spcu-gutenberg/block-editable', {
   title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('SP Editable Block'),
   icon: 'screenoptions',
@@ -49,6 +61,10 @@ const {
       selector: 'p',
       source: 'html'
     },
+    alignment: {
+      type: 'string',
+      default: 'none'
+    },
     site_color: {
       type: "string",
       default: '#333'
@@ -67,13 +83,14 @@ const {
     }
   },
   edit: props => {
-    console.log('props :>> ', props);
+    // console.log('props :>> ', props);
     const {
       className,
       attributes: {
         text,
         social_site,
         site_url,
+        alignment,
         site_color,
         background_image,
         overlay_color,
@@ -150,9 +167,15 @@ const {
         background: overlay_color,
         opacity: overlay_opacity,
         position: 'absolute',
-        inset: '0px'
+        inset: '0px',
+        zIndex: '-1'
       }
-    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, text), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "Name:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(RichText, {
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(BlockControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(AlignmentToolbar, {
+      value: alignment,
+      onChange: alignment => props.setAttributes({
+        alignment: !!alignment ? alignment : 'none'
+      })
+    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, text), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "Name:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(RichText, {
       tagName: "h2",
       className: className,
       onChange: onChangeContentName,
@@ -160,7 +183,8 @@ const {
       value: social_site,
       placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)("Name of the Social Site"),
       style: {
-        color: site_color
+        color: site_color,
+        textAlign: alignment
       }
     }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "URL:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(RichText, {
       tagName: "p",
@@ -168,15 +192,21 @@ const {
       onChange: onChangeContentURL,
       value: site_url,
       placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)("Site Url")
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks, {
+      template: MY_TEMPLATE,
+      templateLock: "insert"
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks, {
+      allowedBlocks: ALLOWED_BLOCKS
     }))];
   },
   save: props => {
-    console.log('props :>> ', props);
+    // console.log('props :>> ', props);
     const {
       attributes: {
         text,
         social_site,
         site_url,
+        alignment,
         site_color,
         background_image,
         overlay_color,
@@ -195,18 +225,21 @@ const {
       className: "block-editable-overlay",
       style: {
         background: overlay_color,
-        opacity: overlay_opacity
+        opacity: overlay_opacity,
+        position: 'absolute',
+        inset: '0px'
       }
     }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, text), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "Name:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(RichText.Content, {
       tagName: "h2",
       value: social_site,
       style: {
-        color: site_color
+        color: site_color,
+        textAlign: alignment
       }
     }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "URL:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(RichText.Content, {
       tagName: "p",
       value: site_url
-    }));
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks.Content, null));
   }
 });
 

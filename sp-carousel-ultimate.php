@@ -73,7 +73,7 @@ final class SP_Carousel_Ultimate_Main {
         wp_enqueue_script(
             'spcu-gutenberg-carousel-block',
             $js_file,
-            array('wp-blocks', 'wp-editor', 'wp-element', 'wp-i18n', 'wp-polyfill'),
+            array('wp-blocks', 'wp-editor', 'wp-components', 'wp-element', 'wp-i18n', 'wp-polyfill'),
             $asset_file['version'],
             true
         );
@@ -140,7 +140,7 @@ final class SP_Carousel_Ultimate_Main {
             },
             'editor_scripts'  => 'spcu-gutenberg-carousel-block',
             'editor_style'    => 'spcu-editor',
-            'script'          => 'spcu-public',
+            'script'          => 'spcu-gutenberg-carousel-block',
             'style'           => 'spcu-public',
         ] );
     }

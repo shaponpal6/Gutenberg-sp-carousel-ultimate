@@ -3,10 +3,21 @@ const {
     RichText,
     InspectorControls,
     ColorPalette,
-    MediaUpload
+    MediaUpload,
+    InnerBlocks,
+    BlockControls,
+    AlignmentToolbar
 } = wp.editor;
 import { __ } from '@wordpress/i18n'
 const { IconButton, RangeControl, PanelBody } = wp.components;
+const ALLOWED_BLOCKS = ['core/button'];
+const MY_TEMPLATE = [
+    ["core/image", {}],
+    ["core/heading", { placeholder: "Title" }],
+    ["core/paragraph", { placeholder: "description" }],
+    // Custom block for Social Media!
+    ["core/button", { placeholder: "Call to Action Button" }]
+]
 
 registerBlockType('spcu-gutenberg/block-editable', {
     title: __('SP Editable Block'),
@@ -28,6 +39,10 @@ registerBlockType('spcu-gutenberg/block-editable', {
             selector: 'p',
             source: 'html',
         },
+        alignment: {
+            type: 'string',
+            default: 'none',
+        },
         site_color: {
             type: "string",
             default: '#333',
@@ -46,8 +61,8 @@ registerBlockType('spcu-gutenberg/block-editable', {
         }
     },
     edit: (props) => {
-        console.log('props :>> ', props);
-        const { className, attributes: { text, social_site, site_url, site_color, background_image, overlay_color, overlay_opacity } } = props;
+        // console.log('props :>> ', props);
+        const { className, attributes: { text, social_site, site_url, alignment, site_color, background_image, overlay_color, overlay_opacity } } = props;
 
         function onChangeContentURL(content) {
             props.setAttributes({ site_url: content })
@@ -101,7 +116,17 @@ registerBlockType('spcu-gutenberg/block-editable', {
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat'
                 }}>
-                    <div className="block-editable-overlay" style={{ background: overlay_color, opacity: overlay_opacity, position: 'absolute', inset: '0px' }}></div>
+                    <div className="block-editable-overlay" style={{
+                        background: overlay_color, opacity: overlay_opacity, position: 'absolute', inset: '0px', zIndex: '-1'
+                    }}></div>
+                    {
+                        <BlockControls>
+                            <AlignmentToolbar
+                                value={alignment}
+                                onChange={(alignment) => props.setAttributes({ alignment: !!alignment ? alignment : 'none' })}
+                            />
+                        </BlockControls>
+                    }
 
                     <h1>{text}</h1>
                     <label>Name:</label>
@@ -112,7 +137,7 @@ registerBlockType('spcu-gutenberg/block-editable', {
                         allowedFormats={['core/bold', 'core/italic']}
                         value={social_site}
                         placeholder={__("Name of the Social Site")}
-                        style={{ color: site_color }}
+                        style={{ color: site_color, textAlign: alignment }}
                     />
                     <label>URL:</label>
                     <RichText
@@ -122,13 +147,15 @@ registerBlockType('spcu-gutenberg/block-editable', {
                         value={site_url}
                         placeholder={__("Site Url")}
                     />
+                    <InnerBlocks template={MY_TEMPLATE} templateLock="insert" />
+                    <InnerBlocks allowedBlocks={ALLOWED_BLOCKS} />
                 </div>
             ]
         )
     },
     save: (props) => {
-        console.log('props :>> ', props);
-        const { attributes: { text, social_site, site_url, site_color, background_image, overlay_color, overlay_opacity } } = props;
+        // console.log('props :>> ', props);
+        const { attributes: { text, social_site, site_url, alignment, site_color, background_image, overlay_color, overlay_opacity } } = props;
         return (
             <div className="block-editable-box" style={{
                 backgroundImage: `url(${background_image})`,
@@ -136,19 +163,22 @@ registerBlockType('spcu-gutenberg/block-editable', {
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat'
             }}>
-                <div className="block-editable-overlay" style={{ background: overlay_color, opacity: overlay_opacity }}></div>
+                <div className="block-editable-overlay" style={{
+                    background: overlay_color, opacity: overlay_opacity, position: 'absolute', inset: '0px'
+                }}></div>
                 <h1>{text}</h1>
                 <label>Name:</label>
                 <RichText.Content
                     tagName='h2'
                     value={social_site}
-                    style={{ color: site_color }}
+                    style={{ color: site_color, textAlign: alignment }}
                 />
                 <label>URL:</label>
                 <RichText.Content
                     tagName='p'
                     value={site_url}
                 />
+                <InnerBlocks.Content />
             </div>
         );
     }
