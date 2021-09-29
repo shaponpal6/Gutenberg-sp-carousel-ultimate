@@ -18,9 +18,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const {
-  RichText
+  RichText,
+  InspectorControls,
+  ColorPalette,
+  MediaUpload
 } = wp.editor;
 
+const {
+  IconButton,
+  RangeControl,
+  PanelBody
+} = wp.components;
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType)('spcu-gutenberg/block-editable', {
   title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('SP Editable Block'),
   icon: 'screenoptions',
@@ -40,6 +48,22 @@ const {
       type: "string",
       selector: 'p',
       source: 'html'
+    },
+    site_color: {
+      type: "string",
+      default: '#333'
+    },
+    background_image: {
+      type: 'string',
+      default: null
+    },
+    overlay_color: {
+      type: 'string',
+      default: 'black'
+    },
+    overlay_opacity: {
+      type: 'number',
+      default: 0.4
     }
   },
   edit: props => {
@@ -49,7 +73,11 @@ const {
       attributes: {
         text,
         social_site,
-        site_url
+        site_url,
+        site_color,
+        background_image,
+        overlay_color,
+        overlay_opacity
       }
     } = props;
 
@@ -65,36 +93,116 @@ const {
       });
     }
 
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      id: "block-editable-box"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, text), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "Name:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(RichText, {
+    return [(0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(InspectorControls, {
+      style: {
+        background: '#ccc'
+      }
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(PanelBody, {
+      title: 'SP Block Color Settings'
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("strong", null, "Choose a block color:")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ColorPalette, {
+      value: site_color,
+      onChange: color => props.setAttributes({
+        site_color: color
+      })
+    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(PanelBody, {
+      title: 'SP Block Media Upload'
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("strong", null, "Choose background image:")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(MediaUpload, {
+      onSelect: image => props.setAttributes({
+        background_image: image.sizes.full.url
+      }),
+      key: "keyMedia",
+      type: "image",
+      value: background_image,
+      render: ({
+        open
+      }) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(IconButton, {
+        className: "editor-media-placeholder__button is-button is-default is-large",
+        icon: "upload",
+        onClick: open
+      }, "Choose Background Image")
+    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(PanelBody, {
+      title: 'SP Block Background Settings'
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("strong", null, "Overlay Color:")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ColorPalette, {
+      value: overlay_color,
+      onChange: color => props.setAttributes({
+        overlay_color: color
+      })
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("strong", null, "Overlay Opacity:")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(RangeControl, {
+      label: 'Overlay Opacity',
+      value: overlay_opacity,
+      onChange: opacity => props.setAttributes({
+        overlay_opacity: opacity
+      }),
+      min: 0,
+      max: 1,
+      step: 0.03
+    }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "block-editable-box",
+      style: {
+        backgroundImage: `url(${background_image})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "block-editable-overlay",
+      style: {
+        background: overlay_color,
+        opacity: overlay_opacity,
+        position: 'absolute',
+        inset: '0px'
+      }
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, text), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "Name:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(RichText, {
       tagName: "h2",
       className: className,
       onChange: onChangeContentName,
       allowedFormats: ['core/bold', 'core/italic'],
       value: social_site,
-      placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)("Name of the Social Site")
+      placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)("Name of the Social Site"),
+      style: {
+        color: site_color
+      }
     }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "URL:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(RichText, {
       tagName: "p",
       className: className,
       onChange: onChangeContentURL,
       value: site_url,
       placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)("Site Url")
-    }));
+    }))];
   },
   save: props => {
+    console.log('props :>> ', props);
     const {
       attributes: {
         text,
         social_site,
-        site_url
+        site_url,
+        site_color,
+        background_image,
+        overlay_color,
+        overlay_opacity
       }
     } = props;
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      id: "block-editable-box"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, text), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "Name:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(RichText.Content, {
+      className: "block-editable-box",
+      style: {
+        backgroundImage: `url(${background_image})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "block-editable-overlay",
+      style: {
+        background: overlay_color,
+        opacity: overlay_opacity
+      }
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, text), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "Name:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(RichText.Content, {
       tagName: "h2",
-      value: social_site
+      value: social_site,
+      style: {
+        color: site_color
+      }
     }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "URL:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(RichText.Content, {
       tagName: "p",
       value: site_url
