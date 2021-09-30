@@ -1,0 +1,1 @@
+{"version":3,"file":"index.css","mappings":";;;AAAA;;EAAA;AAIA;EACC;AAAD,C","sources":["webpack://sp-carousel-ultimate/./src/blocks/carousel/editor.scss"],"sourcesContent":["/**\r\n * The following styles get applied inside the editor only.\r\n */\r\n\r\n.wp-block-create-block-sp-blocks {\r\n\tborder: 1px dotted #f00;\r\n}\r\n"],"names":[],"sourceRoot":""}

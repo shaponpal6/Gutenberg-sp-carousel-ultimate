@@ -83,16 +83,8 @@ final class SP_Carousel_Ultimate_Main {
      * Register Admin Scripts
      */
     public function register_admin_scripts() {
-        $editor_js = SPCU_PLUGIN_URL . '/assets/js/editor.js';
-        wp_enqueue_script(
-            'spcu-editor',
-            $editor_js,
-            [],
-            filemtime($editor_js),
-            true
-        );
-
-        $editor_css = SPCU_PLUGIN_URL . '/assets/css/editor.css';
+       
+        $editor_css = SPCU_PLUGIN_URL . '/build/index.css';
         wp_enqueue_style(
             'spcu-editor',
             filemtime($editor_css),
@@ -115,7 +107,7 @@ final class SP_Carousel_Ultimate_Main {
             true
         );
 
-        $public_css = SPCU_PLUGIN_URL . '/assets/css/style.css';
+        $public_css = SPCU_PLUGIN_URL . '/build/style-index.css';
         wp_enqueue_style(
             'spcu-public',
             $public_css,
@@ -133,16 +125,25 @@ final class SP_Carousel_Ultimate_Main {
             // Block editor is not available.
             return;
         }
-        register_block_type( 'spcu-block/carousel', [
+        register_block_type( 'spcu-blocks/carousel', array(
+            'apiVersion'=> '2',
+            'version'=> '1.0.0',
+            'title'=> 'Sp Carousel',
+            'category'=> 'common',
+            'icon'=> 'smiley',
+            'description'=> 'Example block written with ESNext standard and JSX support – build step required.',
+            'supports'=> [
+                "html"=> false
+            ],
+            'textdomain'=> 'spcu-blocks',
             'attributes' => array(),
             'render_callback' => function(){
                 // server side rendering
             },
             'editor_scripts'  => 'spcu-gutenberg-carousel-block',
             'editor_style'    => 'spcu-editor',
-            'script'          => 'spcu-public',
             'style'           => 'spcu-public',
-        ] );
+         ) );
     }
 
 }
