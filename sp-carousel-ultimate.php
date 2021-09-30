@@ -40,6 +40,8 @@ final class SP_Carousel_Ultimate_Main {
      */
     public function load_plugin() {
         $this->enqueue_scripts();
+        include_once SPCU_PLUGIN_PATH.'classes/Loader.php';
+        new SPCU\Classes\Loader();
     }
 
     /**
@@ -58,69 +60,17 @@ final class SP_Carousel_Ultimate_Main {
      */
     public function enqueue_scripts() {
         add_action( 'enqueue_block_editor_assets', [ $this, 'register_block_editor_assets' ] );
-        add_action( 'admin_enqueue_scripts', [ $this, 'register_admin_scripts' ] );
-        add_action( 'wp_enqueue_scripts', [ $this, 'register_public_scripts' ] );
-        add_action( 'init', [ $this, 'register_blocks' ] );
+        add_action( 'wp_enqueue_scripts', [ $this, 'register_scripts_common' ] );
+        // add_action( 'init', [ $this, 'register_blocks' ] );
     }
 
-    /**
-     * Register Block Editor Assets
-     */
-    public function register_block_editor_assets() {
-        // automatically load dependencies and version
-        $asset_file = include( plugin_dir_path( __FILE__ ) . 'build/index.asset.php');
-        $js_file = SPCU_PLUGIN_URL . '/build/index.js';
-        wp_enqueue_script(
-            'spcu-gutenberg-carousel-block',
-            $js_file,
-            $asset_file['dependencies'],
-            $asset_file['version'],
-            true
-        );
-    }
-
-    /**
-     * Register Admin Scripts
-     */
-    public function register_admin_scripts() {
-       
-        $editor_css = SPCU_PLUGIN_URL . '/build/index.css';
-        wp_enqueue_style(
-            'spcu-editor',
-            filemtime($editor_css),
-            [],
-            filemtime($editor_css),
-            'all'
-        );
-    }
-
-    /**
-     * Register Public Scripts
-     */
-    public function register_public_scripts() {
-        $public_js = SPCU_PLUGIN_URL . '/assets/js/scripts.js';
-        wp_enqueue_script(
-            'spcu-public',
-            $public_js,
-            [],
-            filemtime($public_js),
-            true
-        );
-
-        $public_css = SPCU_PLUGIN_URL . '/build/style-index.css';
-        wp_enqueue_style(
-            'spcu-public',
-            $public_css,
-            [],
-            filemtime($public_css),
-            'all'
-        );
-    }
-
+    
     /**
      * Register Blocks
      */
     public function register_blocks() {
+        register_block_type( __DIR__ );
+        return;
         if ( ! function_exists( 'register_block_type' ) ) {
             // Block editor is not available.
             return;
@@ -145,6 +95,63 @@ final class SP_Carousel_Ultimate_Main {
             'style'           => 'spcu-public',
          ) );
     }
+
+    /**
+     * Only load in Backend
+     * Register Block Editor Assets
+     */
+    public function register_block_editor_assets() {
+        // automatically load dependencies and version
+        $asset_file = include( plugin_dir_path( __FILE__ ) . 'build/index.asset.php');
+        // Make paths variables so we don't write em twice 😉
+        $editor_js = SPCU_PLUGIN_URL . 'build/index.js';
+        $editor_css = SPCU_PLUGIN_URL . 'build/index.css';
+
+        // Enqueue the bundled block JS file
+        wp_enqueue_script('spcu-gutenberg-carousel-block', $editor_js, array('wp-i18n', 'wp-element', 'wp-blocks', 'wp-components', 'wp-editor' ),$asset_file['version'],true);
+        
+        // Enqueue optional editor only styles
+        wp_enqueue_style('spcu-public',$editor_css,[],filemtime($editor_css),'all');
+
+        $this->register_scripts_common();
+        // if(is_rtl()){ }
+        wp_localize_script('spcu-gutenberg-carousel-block', 'spcu_data', array(
+            'url' => site_url(),
+            'ajax' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('spcu-nonce'),
+            'upload' => wp_upload_dir()['basedir'] . '/spcu',
+        ));
+
+        wp_set_script_translations( 'spcu-gutenberg-carousel-block', 'spcu-blocks', SPCU_PLUGIN_PATH . 'languages/' );
+    }
+
+    /**
+	 * Common Frontend and Backend CSS and JS Scripts
+     * 
+     * @since v.1.0.0
+	 * @return NULL
+	 */
+    public function register_scripts_common(){
+        // automatically load dependencies and version
+        $asset_file = include( plugin_dir_path( __FILE__ ) . 'build/index.asset.php');
+        // Make paths variables so we don't write em twice 😉
+        $public_js = SPCU_PLUGIN_URL . 'assets/js/scripts.js';
+        $public_css = SPCU_PLUGIN_URL . 'build/style-index.css';
+
+         // Enqueue frontend and editor js
+        wp_enqueue_script('spcu-public-script', $public_js, ['jQuery'], $asset_file['version'],true );
+        
+         // Enqueue frontend and editor block styles
+        wp_enqueue_style('spcu-public', $public_css, [], filemtime($public_css), 'all');
+
+        wp_localize_script('spcu-public-script', 'spcu_data_frontend', array(
+            'url' => site_url(),
+            'ajax' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('spcu-nonce')
+        ));
+
+    }
+ 
 
 }
 

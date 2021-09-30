@@ -1,17 +1,6 @@
-/**
- * Retrieves the translation of text.
- *
- * @see https://developer.wordpress.org/block-editor/packages/packages-i18n/
- */
 import { __ } from '@wordpress/i18n';
-
-/**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
- */
 import { useBlockProps } from '@wordpress/block-editor';
+import ServerSideRender from '@wordpress/server-side-render';
 
 /**
  * The save function defines the way in which the different attributes should
@@ -22,10 +11,13 @@ import { useBlockProps } from '@wordpress/block-editor';
  *
  * @return {WPElement} Element to render.
  */
-export default function save() {
+export default function save(props) {
     return (
         <p {...useBlockProps.save()}>
-            {__('Sp Blocks – hello from the saved content!', 'sp-blocks')}
+            <ServerSideRender
+                block="spcu-blocks/carousel-ssr"
+                attributes={props.attributes}
+            />
         </p>
     );
 }

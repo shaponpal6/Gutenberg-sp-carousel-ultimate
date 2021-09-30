@@ -1,17 +1,7 @@
-/**
- * Retrieves the translation of text.
- *
- * @see https://developer.wordpress.org/block-editor/packages/packages-i18n/
- */
 import { __ } from '@wordpress/i18n';
-
-/**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
- */
 import { useBlockProps } from '@wordpress/block-editor';
+import Carousel from '../../../components/Carousel'
+import Votes from '../../../components/Votes'
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -20,6 +10,7 @@ import { useBlockProps } from '@wordpress/block-editor';
  * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
  */
 import './editor.scss';
+import "react-multi-carousel/lib/styles.css";
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -32,7 +23,9 @@ import './editor.scss';
 export default function Edit() {
     return (
         <p {...useBlockProps()}>
-            {__('Sp Blocks – hello from the editor!', 'sp-blocks')}
+            {__('Sp Blocks – hello from the editor!222', 'sp-blocks')}
+            <Votes />
+            <Carousel />
         </p>
     );
 }

@@ -18,14 +18,26 @@ import './style.scss';
  * Internal dependencies
  */
 import Edit from './edit';
-import save from './save';
+import Save from './save';
+import Attributes from './attributes';
 
 /**
  * Every block starts by registering a new block type definition.
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-registerBlockType('spcu-blocks/carousel', {
+registerBlockType('spcu-blocks/editable-text-block', {
+    "apiVersion": 2,
+    "version": "1.0.0",
+    "category": "common",
+    "icon": "smiley",
+    "description": "Example block written with ESNext standard and JSX support – build step required.",
+    "supports": {
+        "html": false
+    },
+    "textdomain": "spcu-blocks",
+
+    attributes: Attributes,
     /**
      * @see ./edit.js
      */
@@ -34,5 +46,5 @@ registerBlockType('spcu-blocks/carousel', {
     /**
      * @see ./save.js
      */
-    save,
+    save: Save,
 });
