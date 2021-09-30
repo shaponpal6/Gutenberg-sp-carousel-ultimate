@@ -1,0 +1,16 @@
+{
+	"apiVersion": 2,
+	"name": "spcu-blocks/carousel",
+	"version": "1.0.0",
+	"title": "Sp Carousel Ultimate",
+	"category": "common",
+	"icon": "smiley",
+	"description": "Example block written with ESNext standard and JSX support – build step required.",
+	"supports": {
+		"html": false
+	},
+	"textdomain": "spcu-blocks",
+	"editorScript": "file:./build/index.js",
+	"editorStyle": "file:./build/index.css",
+	"style": "file:./build/style-index.css"
+}

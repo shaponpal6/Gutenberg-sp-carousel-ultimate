@@ -14,7 +14,9 @@
     "test:e2e": "wp-scripts test-e2e",
     "test:unit": "wp-scripts test-unit-js",
     "readme": "grunt readme",
-    "i18n": "grunt i18n"
+    "i18n": "grunt i18n",
+    "format": "wp-scripts format",
+    "packages-update": "wp-scripts packages-update"
   },
   "devDependencies": {
     "@wordpress/scripts": "^18.0.1",
@@ -35,6 +37,7 @@
   "license": "ISC",
   "dependencies": {
     "@wordpress/blocks": "^11.1.0",
-    "@wordpress/i18n": "^4.2.2"
+    "@wordpress/i18n": "^4.2.2",
+    "react-multi-carousel": "^2.6.5"
   }
 }

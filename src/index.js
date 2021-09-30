@@ -1,4 +1,4 @@
-import './blocks/author-carousel'
-import './blocks/page-carousel'
-import './blocks/post-carousel'
-import './blocks/product-carousel'
+import './blocks/carousel/carousel-react'
+import './blocks/carousel/carousel-ssr'
+import './blocks/block-acf'
+import './blocks/editable'
